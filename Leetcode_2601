@@ -1,0 +1,44 @@
+class Solution {
+public:
+
+    bool isPrime(int n) {
+        for(int i=2;(i*i) <= n;i++) {
+            if(n%i == 0) return false;
+        }
+        return true;
+    }
+    vector<int> PrimeCollector() {
+        vector<int> ans;
+        ans.push_back(0);
+        for(int i=2;i<=1000;i++) {
+            if(isPrime(i) || i==2) {
+                ans.push_back(i);
+            }
+        }
+        return ans;
+    }
+ 
+    bool primeSubOperation(vector<int>& nums) {
+        vector<int> primes = PrimeCollector();
+        int n = nums.size();
+        for(int i=0;i<n;i++) {
+            int idx = -1;
+                for(int j=0;j<primes.size();j++) {
+                    if(primes[j] < nums[i]) {
+                        idx = j;
+                    }
+                    else break;
+                } 
+            if(idx >=0) {
+                while(idx >=0 && i > 0 && (nums[i] - primes[idx]) <= nums[i-1]) idx--;
+                if(idx >=0) nums[i] = nums[i] - primes[idx];
+                else return false;
+            }  
+            cout<<nums[i]<<" ";
+        }
+        for(int i=0;i<n-1;i++) {
+            if(nums[i] >= nums[i+1]) return false;
+        }
+        return true;
+    }
+};
